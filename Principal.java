@@ -1,9 +1,11 @@
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import ForkLibary.Entity.ForkMatrizAdjacencia;
 import ForkLibary.Entity.ForkEntity;
 import ManipuladorArquivo.ManipuladorArquivo;
+import ManipuladorArquivo.Configuration.Configuracao;
 
 import java.util.ArrayList;
 
@@ -13,22 +15,23 @@ import java.util.ArrayList;
 class Principal {
 
     public static void main(String[] args) throws IOException {
-        ForkMatrizAdjacencia a = new ForkMatrizAdjacencia(5);
-        // ForkMatrizAdjacencia.this
 
-        a.inserirAresta(1,2,(double) 10);
-        Principal.imprime(a.matriz,5);
-        a.rotularVertice(1,"OlaMundo");
+        // ForkMatrizAdjacencia a = new ForkMatrizAdjacencia(5);
+        // // ForkMatrizAdjacencia.this
 
-        a.vertice.forEach( (k, v) -> {
-            System.out.println("key: " + k + ", nome: " + v.getNome());
-        });
+        // a.inserirAresta(1,2,(double) 10);
+        // Principal.imprime(a.matriz,5);
+        // a.rotularVertice(1,"OlaMundo");
+
+        // a.vertice.forEach( (k, v) -> {
+        //     System.out.println("key: " + k + ", nome: " + v.getNome());
+        // });
         
-        System.out. print (a.inserirAresta(1,4,(double) 5));
-        Principal.imprime(a.matriz,5);
+        // System.out. print (a.inserirAresta(1,4,(double) 5));
+        // Principal.imprime(a.matriz,5);
 
-        System.out. print (a.inserirAresta("OlaMundo",4,(double) 5));
-        Principal.imprime(a.matriz,5);
+        // System.out. print (a.inserirAresta("OlaMundo",4,(double) 5));
+        // Principal.imprime(a.matriz,5);
 
     }
 
