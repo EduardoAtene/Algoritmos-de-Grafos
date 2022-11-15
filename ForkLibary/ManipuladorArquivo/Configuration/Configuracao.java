@@ -1,4 +1,4 @@
-package ManipuladorArquivo.Configuration;
+package ForkLibary.ManipuladorArquivo.Configuration;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -34,7 +34,7 @@ public class Configuracao {
 		buffRead.close();
     }
 
-    private static String verificationAtributeClassConfig(String variable){
+    public static String verificationAtributeClassConfig(String variable){
         for (Field field : Configuracao.class.getDeclaredFields()) {
             if(field.getName() == variable){
                 return field.getName();
@@ -42,7 +42,7 @@ public class Configuracao {
         }
         return null;
     }
-
+    
     private static void setConfiguration(String variable,String value){
         switch (variable) {
             case "SEPARADOR":
@@ -73,6 +73,10 @@ public class Configuracao {
                 Configuracao.ARESTA = value;
             break;
         }
+    }
+
+    private static void aa(String valueConfig){
+
     }
 
     // Getters

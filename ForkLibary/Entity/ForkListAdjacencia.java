@@ -1,6 +1,9 @@
 package ForkLibary.Entity;
 
-class ForkListAdjacencia extends ForkEntity{
+public class ForkListAdjacencia extends ForkEntity{
+
+    public ForkListAdjacencia() {
+    }
 
     
 }

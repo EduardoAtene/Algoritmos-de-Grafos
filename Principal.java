@@ -3,9 +3,10 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import ForkLibary.Entity.ForkMatrizAdjacencia;
+import ForkLibary.Log.LogModel;
+import ForkLibary.ManipuladorArquivo.ManipuladorArquivo;
+import ForkLibary.ManipuladorArquivo.Configuration.Configuracao;
 import ForkLibary.Entity.ForkEntity;
-import ManipuladorArquivo.ManipuladorArquivo;
-import ManipuladorArquivo.Configuration.Configuracao;
 
 import java.util.ArrayList;
 
@@ -15,7 +16,8 @@ import java.util.ArrayList;
 class Principal {
 
     public static void main(String[] args) throws IOException {
-
+        // LogModel.setErrorLog("Erro na hora de importar bla bla");
+        
         // ForkMatrizAdjacencia a = new ForkMatrizAdjacencia(5);
         // // ForkMatrizAdjacencia.this
 
