@@ -103,6 +103,38 @@ public class ForkListAdjacencia extends ForkEntity{
         return false;
     };
     
+    public Integer getCountAdjacentesGrafo(Boolean grafoDirecionado){
+        Integer quantidade = 0;
+        ArrayList<Object> arrayExplorados = new ArrayList<>();
+        for (Map.Entry<Object,LinkedList<Map<Object,ForkEntity.Aresta>>> lista : this.listaAdjacencia.entrySet()) {    
+            int tamanho =  lista.getValue().size();
+            if(!grafoDirecionado){
+                for (int i = 0; i < tamanho; i++) {            
+                    for (Map.Entry<Object,ForkEntity.Aresta> aresta : lista.getValue().get(i).entrySet()) {
+                        if( !(ForkListAdjacencia.validHasExploradoGrafo(arrayExplorados,aresta.getValue().getVertice_1()) ||
+                              ForkListAdjacencia.validHasExploradoGrafo(arrayExplorados,aresta.getValue().getVertice_2()) ) ){
+                            quantidade++;
+                        }    
+                    }
+                }
+            }else{
+                quantidade += tamanho;
+            }
+
+            arrayExplorados.add(lista.getKey());
+        }
+
+        return quantidade;     
+    };
+
+    private static Boolean validHasExploradoGrafo(ArrayList<Object> ConjuntoExplorados,Object elemento){
+        for (Object element : ConjuntoExplorados) {
+            if (element.equals(elemento)) {
+                return true;
+            }
+        }
+        return false;
+    }
     public Integer getCountAdjacentesVertices(Object vertice,Boolean grafoDirecionado){
         Integer quantidade = 0;
         if(this.vertice.get(vertice) != null ){
@@ -256,12 +288,44 @@ public class ForkListAdjacencia extends ForkEntity{
         return false;
     }
 
+    /**
+     *  Função que verifica se o Grafo instanciado é Nulo/Trivial.
+     * 
+     *  Observação: Grafo Nulo representa um gráfo que não possua arestas.
+     * 
+     * @return              Retorna True  caso o Grafo é Nulo/Trivial.
+     * @                    Retorna False caso o Grafo é Nulo/Trivial.
+     */
+    public boolean isForkNulo() {
+        for (Map.Entry<Object,LinkedList<Map<Object,ForkEntity.Aresta>>> listaAdj : this.listaAdjacencia.entrySet()) {    
+            if(this.doVerticeExistAdjacencia(listaAdj.getKey()))
+                return false; // existe uma aresta
+        }
+        return true;
+    }
+
+    /**
+     *  Função que verifica se o Grafo instanciado é Completo.
+     * 
+     *  Observação: Grafo Completo representa um gráfo que todo vértice é adjacente a todos os outros vértices.
+     * 
+     * @return              Retorna True  caso o Grafo é Nulo/Trivial.
+     * @                    Retorna False caso o Grafo é Nulo/Trivial.
+     */
+    public Boolean isForkCompleto() {
+            Double formula;
+            Double countArestaAll = Double.valueOf(this.getCountAdjacentesGrafo(false));
+            Double countVerticeAll = Double.valueOf(this.getCountVertices());
+            formula =  (countVerticeAll * (countVerticeAll - 1.0)) / 2;
+            if(formula.equals(countArestaAll))
+                return true; // Possi (n*(n-1) )/2 arestas. Ou seja, completo
+            return false;
+    }
     public boolean doVerticeExistAdjacencia ( Object vertice) {
-        if(this.listaAdjacencia.get(vertice) != null)
+        if(this.listaAdjacencia.get(vertice).size() != 0)
             return true; // existe vertice
         return false;
     }
-    
 
     public Boolean doVerticeExistAdjacencia(Object vertice1,Object vertice2){
         Boolean removeSomeone = false;
@@ -287,31 +351,6 @@ public class ForkListAdjacencia extends ForkEntity{
 
       
     };
-
-
-    public void printGrafoAdjacencia()
-    {
-        for (Map.Entry<Object,LinkedList<Map<Object,ForkEntity.Aresta>>> lista : this.listaAdjacencia.entrySet()) {
- 
-            // Printing the head
-            System.out.print(lista.getKey() + "->");
-            if(lista.getValue() != null){
-                int tamanhoList =  lista.getValue().size();
-                if(true){
-                    for (int i = 0; i < tamanhoList; i++) {
-                        for (Map.Entry<Object,ForkEntity.Aresta> aresta : lista.getValue().get(i).entrySet()) {
-                            System.out.print("  "+aresta.getKey() + "  {"+aresta.getValue().getPeso()+"}  :  ");
-                        }
-                    }
-                }
-            }
-   
-
- 
-            // Now a new lin eis needed
-            System.out.println();
-        }
-    }
 
     public Boolean removeVertice(Object vertice) {      
         Boolean removeSomeone = false;
@@ -347,7 +386,6 @@ public class ForkListAdjacencia extends ForkEntity{
         return false;  
     }
 
-
     public Boolean removeAresta(Object vertice1, Object vertice2) {
         Boolean removeSomeone = false;
         if(this.vertice.get(vertice1) != null && this.vertice.get(vertice2) != null ){
@@ -370,6 +408,30 @@ public class ForkListAdjacencia extends ForkEntity{
             }
         }
         return removeSomeone;
+    }
+
+    public void printGrafoAdjacencia()
+    {
+        for (Map.Entry<Object,LinkedList<Map<Object,ForkEntity.Aresta>>> lista : this.listaAdjacencia.entrySet()) {
+ 
+            // Printing the head
+            System.out.print(lista.getKey() + "->");
+            if(lista.getValue() != null){
+                int tamanhoList =  lista.getValue().size();
+                if(true){
+                    for (int i = 0; i < tamanhoList; i++) {
+                        for (Map.Entry<Object,ForkEntity.Aresta> aresta : lista.getValue().get(i).entrySet()) {
+                            System.out.print("  "+aresta.getKey() + "  {"+aresta.getValue().getPeso()+"}  :  ");
+                        }
+                    }
+                }
+            }
+   
+
+ 
+            // Now a new lin eis needed
+            System.out.println();
+        }
     }
 
     

@@ -38,16 +38,21 @@ class Principal {
         // System.out. print (a.inserirAresta("OlaMundo",4,(double) 5));
         // Principal.imprime(a.matriz,5);
 
+
+
         /*
-         * Grafo Lista Adjacencia.
-         * Como testes, criaremos um grafo com 8 Vertíces
+         *      CRIANDO UM GRAFO: Lista Adjacencia.
+         *      Como testes, criaremos um grafo não direcionado e ponderado com 8 Vertíces
+         *      
+         *      Functiton   : new ForkListAdjacencia()
+         *      Return Case : ForkListAdjacencia Entry/Objeto/Entidade
          */
         
         ForkListAdjacencia forkListAdj = new ForkListAdjacencia(8);
 
-        // Principal.imprime(a.matriz,5);
-        // a.rotularVertice(5,"Gustavo");
-        // a.rotularVertice(1,"OlaMundo");
+        /**
+         *      OPERAÇÕES DAS VERTICES
+         */
 
         /**     INSERINDO VÉRTICES
          * 
@@ -60,28 +65,16 @@ class Principal {
         /**     INSERINDO NÃO EXISTENTES VÉRTICES
          * 
          *      Functiton   : inserirVertice()
-         *      Return Case : False
+         *      Return Case : False. Nome Referenciado para o Vértices já existênte no grafo
          */ 
-
-
-        /**     CHEGANDO EXISTENCIA VÉRTICE
-         * 
-         *      Functiton   : doExistVertice()
-         *      Return Case : True or False
-         */ 
-        // System.out.println(forkListAdj.doExistVertice(8));           //  True
-        // System.out.println(forkListAdj.doExistVertice(50));          //  False
-        // System.out.println(forkListAdj.doExistVertice(13));          //  False
-        // System.out.println(forkListAdj.doExistVertice(1));           //  True
-        // System.out.println(forkListAdj.doExistVertice(3));           //  True
-        // System.out.println(forkListAdj.doExistVertice("Teste"));     //  False
-        // System.out.println(forkListAdj.doExistVertice(7));           //  True
-
+        // forkListAdj.inserirVertice(1);
+        // forkListAdj.inserirVertice(2);
 
 
         /**     ROTULANDO VÉRTICES EXISTENTES
          * 
-         *      Return True: Rotulou com sucesso.
+         *      Functiton   : rotularVertice()
+         *      Return Case : True. Rotulou com sucesso.
          */      
         forkListAdj.rotularVertice(1,"Vertice_Gabriel");
         forkListAdj.rotularVertice(2,"Vertice A");
@@ -91,47 +84,147 @@ class Principal {
         /**
          *      ROTULANDO VÉRTICES NÃO EXISTENTES
          * 
-         *      Return False:   Não rotulou, pos não há existência do vértice no gráfo.
+         *      Functiton   : rotularVertice()
+         *      Return Case :   False:
+         *                       Não rotulou, pos não há existência do vértice no gráfo.
          *                      Todos os casos não existe a chave, mas em um caso específoco que devemos notar.
          *                      Assim que realizamos a rotulação do vértice 1, acima, ele acabou sendo chamado de "Vertice_Gabriel". 
          *                      Ou seja, esse vétice não existe mais.    
          * 
          */ 
-        forkListAdj.rotularVertice(1313,6);
-        forkListAdj.rotularVertice("Jubileu",6);
-        forkListAdj.rotularVertice(2023,"Kalista");
-        forkListAdj.rotularVertice("<3","Caitliy");
-        forkListAdj.rotularVertice(1,"Sona");
+        // forkListAdj.rotularVertice(1313,6);
+        // forkListAdj.rotularVertice("Jubileu",6);
+        // forkListAdj.rotularVertice(2023,"Kalista");
+        // forkListAdj.rotularVertice("<3","Caitliy");
+        // forkListAdj.rotularVertice(1,"Sona");
                 
+
+        /**     CHEGANDO EXISTENCIA VÉRTICE
+         * 
+         *      Functiton   : doExistVertice()
+         *      Return Case : True or False
+         */ 
+        // System.out.println(forkListAdj.doExistVertice(8));                           //  True
+        // System.out.println(forkListAdj.doExistVertice(50));                          //  False
+        // System.out.println(forkListAdj.doExistVertice(13));                          //  False
+        // System.out.println(forkListAdj.doExistVertice("Vertice_Gabriel"));           //  True
+        // System.out.println(forkListAdj.doExistVertice("Vertice X"));                 //  True
+        // System.out.println(forkListAdj.doExistVertice("Teste"));                     //  False
+        // System.out.println(forkListAdj.doExistVertice(7));                           //  True
+
+        /**     CHEGANDO QUANTIDADE TOTAL DE VÉRTICE NO GRAFO
+         * 
+         *      Functiton   : getCountVertices()
+         *      Return Case : Intiger / Quantidade total de vértices do grafo forkListAdj.
+         */ 
+        // System.out.println(forkListAdj.getCountVertices());
         
+    
         /**
-         * Testes Arestas na Lista de Adjacencia
+         *      OPERAÇÕES DAS ARESTAS
          */
         
         /**     INSERINDO ARESTAS EM VÉRTICES EXISTENTES
          * 
-         *      Return True: Funcionou
+         *      Functiton   : inserirAresta()
+         *      Return Case : True. Funcionou
          */ 
         forkListAdj.inserirAresta("Vertice X",4,(double) 4);
-        forkListAdj.inserirAresta("Vertice X","Vertice_Gabriel");
+        forkListAdj.inserirAresta("Vertice X","Vertice A");
         forkListAdj.inserirAresta("Vertice X","Vertice_Gabriel",(double) 10);
         forkListAdj.inserirAresta(7,4,(double) 4);
         forkListAdj.inserirAresta(6,7);
         forkListAdj.inserirAresta(8,7,(double) 2.5);
 
-        /**     INSERINDO ARESTAS EM VÉRTICES NÃO EXISTENTES
-         * 
-         *      Return False: Aresta {100}, {'A' 'B'} e {'Nota_Total_Trabalho'} não existente. Será mesmo que o total vem? Veremos.
-         */ 
-        forkListAdj.inserirAresta("Vertice_Gabriel","Nota_Total_Trabalho",(double) 10);
-        forkListAdj.inserirAresta("Vertice_Gabriel",100,(double) 10);
-        forkListAdj.inserirAresta("A","B",(double) 10);
+
+
+        // TESTE EM GERAL
+
+            /**     INSERINDO ARESTAS EM VÉRTICES NÃO EXISTENTES
+             * 
+             *      Functiton   : inserirAresta()
+             *      Return Case : False.
+             *                      Aresta {100}, {'A' 'B'} e {'Nota_Total_Trabalho'} não existente.
+             *                      _Será mesmo que o total vem? Veremos._
+             */ 
+            // forkListAdj.inserirAresta("Vertice_Gabriel","Nota_Total_Trabalho",(double) 10);
+            // forkListAdj.inserirAresta("Vertice_Gabriel",100,(double) 10);
+            // forkListAdj.inserirAresta("A","B",(double) 10);
+
+            /**     CHEGANDO QUANTIDADE TOTAL ARESTAS DE UM VÉRTICE
+             * 
+             *      Functiton   : getCountAdjacentesVertices()
+             *      Return Case : Intiger / Quantidade total de arestas do vértices informado do grafo forkListAdj.
+             * 
+             *      Observação  :   O grafo do teste é NÃO DIRECIONADO. Caso for direcionado, o valor resultante da 
+             *                    operação é equivalente ao dobro dele. Pois estamos fazendo bidirecionamento ao inserir
+             *                    arestas e não estamos informando a direção dele. Entretanto, o algoritmo está habilitado
+             *                    em realiizar operações com grafos direcionados.
+             */ 
+            // System.out.println(forkListAdj.getCountAdjacentesVertices(7,false));
+
+            
+            /**     CHEGANDO QUANTIDADE TOTAL ARESTAS DO GRAFO
+             * 
+             *      Functiton   : getCountAdjacentesGrafo()
+             *      Return Case : Intiger / Quantidade total de arestas do vértices informado do grafo forkListAdj.
+             * 
+             *      Observação  :   O grafo do teste é NÃO DIRECIONADO. Caso for direcionado, o valor resultante da 
+             *                    operação é equivalente ao dobro dele. Pois estamos fazendo bidirecionamento ao inserir
+             *                    arestas e não estamos informando a direção dele. Entretanto, o algoritmo está habilitado
+             *                    em realiizar operações com grafos direcionados.
+             */ 
+            // System.out.println(forkListAdj.getCountAdjacentesGrafo(false));
+
+            /**     CHEGANDO EXISTêNCIA DE ADJACENCIA DE UM VÉRTICE
+             * 
+             *      Functiton   : doVerticeExistAdjacencia()
+             *      Return Case : True and False
+             *                        1) First Case     : True
+             *                        2) Second Case    : False. Assim identificamos um componente do gráfo. Já não é completo
+             * 
+             */ 
+            // System.out.println(forkListAdj.doVerticeExistAdjacencia(7));
+            // System.out.println(forkListAdj.doVerticeExistAdjacencia(18));
+
+            /**     CHEGANDO EXISTêNCIA DE ADJACENCIA ENTRE DOIS VÉRTICES
+             * 
+             *      Functiton   : getCountVertices()
+             *      Return Case : True and False
+             *                        1) First Case     : True.
+             *                        2) Second Case    : False. Assim identificamos um componente do gráfo. Já não é completo.
+             * 
+             */ 
+            // System.out.println(forkListAdj.doVerticeExistAdjacencia(4,"Vertice X"));
+            // System.out.println(forkListAdj.doVerticeExistAdjacencia(4,6));
+
+
+            /**     CHEGANDO SE É UM GRAFO NULO/TRIVIAL
+             * 
+             *      Functiton   : isForkNulo()
+             *      Return Case : True and False
+             *                        1) True     : O Grafo instanciado é Nulo. Ou seja, não possui nenhuma aresta.
+             *                        2) False    : O Grafo instanciado não é Nulo. Ou seja, possui aresta.
+             * 
+             */ 
+            // System.out.println(forkListAdj.isForkNulo());
+
+            /**     CHEGANDO SE É UM GRAFO COMPLETO
+             * 
+             *      Functiton   : isForkNulo()
+             *      Return Case : True and False
+             *                        1) True     : O Grafo instanciado é Nulo. Ou seja, não possui nenhuma aresta.
+             *                        2) False    : O Grafo instanciado não é Nulo. Ou seja, possui aresta.
+             * 
+             */ 
+        System.out.println(forkListAdj.isForkCompleto());
 
         /**     IMPRIMINDO GRAFOS
          * 
-         *      Return StorageDisplay: Imprimi no terminal o grafo no formato de uma lista encademada 
+         *      Functiton               : printGrafoAdjacencia()
+         *      Return StorageDisplay   : Imprimi no terminal o grafo no formato de uma lista encademada 
          */ 
-        // forkListAdj.printGrafoAdjacencia();
+        forkListAdj.printGrafoAdjacencia();
 
     }
 
