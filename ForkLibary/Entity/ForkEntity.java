@@ -11,10 +11,10 @@ public abstract class ForkEntity {
          * Observação:   A Aresta não trata Peso que não seja um valor número. Ou seja, para adjacência
          *              que contém o peso tratado e equivalente a uma string, VAI DAR MERDA.
          */
-        private Object nome;
-        private int enumeracao;
-        private int posicao;
-        private double peso;
+        private Object nome; // 1 :: oLÁ MUNDO
+        private int enumeracao; // 1  Vertice
+        private int posicao; // 0 Matriz
+        private double peso; // Peso Do Vértice
 
         // Construtores
         public Vertice ( Object nome,int enumeracao ,int posicao) {
@@ -57,7 +57,9 @@ public abstract class ForkEntity {
          *              que contém o peso tratado e equivalente a uma string, VAI DAR MERDA.
          */
         private Object vertice_1, vertice_2;
+        private Object nome; // 1 :: oLÁ MUNDO
         private Double peso;
+        private int posicao; // List
         private Boolean direcionado = false; // Para Grafos Direcionados, É instan
         private ArestaDirecao ArestaDirecao;
 
@@ -97,8 +99,21 @@ public abstract class ForkEntity {
             this.ArestaDirecao = new ArestaDirecao(vertice_1,vertice_2);
         }
 
+        public Aresta ( Object vertice_1, Object vertice_2, Double peso, Boolean direcionado,int posicao) {
+            this(vertice_1,vertice_2,peso);
+            this.direcionado = direcionado;
+            this.posicao = posicao;
+            this.ArestaDirecao = new ArestaDirecao(vertice_1,vertice_2);
+        }
+
 
         // Getters and Setters
+        
+        public void setPosicao(int posicao ){
+            this.posicao = posicao;
+        }
+
+
         public Object getVertice_1( ){
             return this.vertice_1;
         }
@@ -110,6 +125,11 @@ public abstract class ForkEntity {
         public Double getPeso( ){ 
             return this.peso; 
         }
+        
+        public int getPosicao( ){
+            return this.posicao;
+        }
+
        
         public boolean isDirecionado( ){ 
             return this.direcionado;
@@ -120,7 +140,4 @@ public abstract class ForkEntity {
     public Integer quantidadeVertices;
     public Integer quantidadeArestas;
 
-    abstract public void gerarGrafico();
-    abstract public void removeVertice();
-    abstract public void removeAresta();
 }

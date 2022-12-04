@@ -6,6 +6,7 @@ import java.util.Map;
 public class ForkMatrizAdjacencia extends ForkEntity{
     public Double matriz[][];
     public Map<Object,ForkEntity.Vertice> vertice = new HashMap<Object,ForkEntity.Vertice>();
+    public Map<Object,ForkEntity.Aresta> aresta = new HashMap<Object,ForkEntity.Aresta>();
 
     public boolean direction = false;
 
@@ -69,7 +70,7 @@ public class ForkMatrizAdjacencia extends ForkEntity{
      * @return              Retorna True caso realizou a inserção com Sucesso.
      * @                    Retorna False caso a operação não foi um  Sucesso. Ocorre quando não existe Vertice informado.
      */
-    public boolean inserirAresta ( Object vertice, Double peso) {
+    public boolean a ( Object vertice, Double peso) {
         if( this.doExistVertice(vertice)){
             this.vertice.get(vertice).setPonderamento(peso);
             return true;
@@ -111,8 +112,6 @@ public class ForkMatrizAdjacencia extends ForkEntity{
         return this.inserirAresta(vertice_1,vertice_2,(double) 1);
     }
 
-
-
     /**
      * Função que verifica existência do Vertice.
      * 
@@ -126,8 +125,7 @@ public class ForkMatrizAdjacencia extends ForkEntity{
         return false;
     }
     
-
-
+    
     public void gerarGrafico(){
 
     };
