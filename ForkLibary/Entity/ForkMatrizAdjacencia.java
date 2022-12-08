@@ -127,9 +127,23 @@ public class ForkMatrizAdjacencia extends ForkEntity{
     
     
     public void gerarGrafico(){
-
+    	System.out.print("    ");
+    	for(int i = 0; i < this.matriz.length; i++) {
+    		System.out.print(" V" + (i + 1) + "  ");
+    	}
+    	System.out.println();
+    	for(int i = 0; i < this.matriz.length; i++) {
+    		System.out.print("V" + (i + 1) + " ");
+    		for(int j = 0; j < this.matriz[i].length; j++) {
+    			System.out.print(" " + this.matriz[i][j] +  " ");
+    		}
+    		System.out.println();
+    	}
     };
 
+    public Map<Object,ForkEntity.Vertice> getVertices() {
+    	return this.vertice;
+    }
     public void removeVertice(){
 
     };
