@@ -27,8 +27,7 @@ public class CsvService {
 	CSVWriter csvWriter; 
 	
 	public boolean gerarCsv(ForkMatrizAdjacencia grafo,String nomeArquivo) throws IOException {
-		this.file = new FileWriter(new File(nomeArquivo + ".csv"));
-		Path myPath = Paths.get(nomeArquivo + ".csv");
+		Path myPath = Paths.get("csv/arquivos/"+nomeArquivo + ".csv");
 		this.csvWriter = new CSVWriter(Files.newBufferedWriter(myPath,
 			    StandardCharsets.UTF_8), ';',
 			    CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.NO_ESCAPE_CHARACTER,
@@ -63,7 +62,6 @@ public class CsvService {
 		
 		
 		this.csvWriter.close();
-		this.file.close();
 		
 		this.data = new ArrayList();
 		return true;
@@ -96,7 +94,7 @@ public class CsvService {
 	
 	public List<List<String>> lerCsv(String nomeArquivo) throws IOException {
 		List<List<String>> regs = new ArrayList();
-		BufferedReader br =  new BufferedReader(new FileReader(nomeArquivo + ".csv"));
+		BufferedReader br =  new BufferedReader(new FileReader("csv/arquivos/"+ nomeArquivo + ".csv"));
 		String linha;
 		while((linha = br.readLine()) != null) {
 			String[] colunas = linha.split(";");
