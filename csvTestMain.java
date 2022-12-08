@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.opencsv.CSVWriter;
 
+import ForkLibary.Entity.ForkListAdjacencia;
 import ForkLibary.Entity.ForkMatrizAdjacencia;
 import csv.CsvService;
 
@@ -87,5 +88,15 @@ public class csvTestMain {
 		});
 		
 		System.out.println();
+		
+		
+		
+		
+		ForkListAdjacencia listaAdj = new ForkListAdjacencia(3);
+		
+		listaAdj.inserirAresta(1,2);
+		listaAdj.inserirAresta(1,3);
+		listaAdj.printGrafoAdjacencia();
+		
 	}
 }
