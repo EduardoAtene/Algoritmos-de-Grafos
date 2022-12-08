@@ -14,7 +14,7 @@ public class csvTestMain {
 	public static void main(String[] args) throws IOException {
 		
 		//Classe que gtera os arquivos csv
-		CsvService service = new CsvService();
+		CsvService csvService = new CsvService();
 		
 		ForkMatrizAdjacencia grafoLetras = new ForkMatrizAdjacencia(5);
 		grafoLetras.rotularVertice(1, "A");
@@ -29,7 +29,7 @@ public class csvTestMain {
 		grafoLetras.inserirAresta("A", "D");
 		grafoLetras.inserirAresta("A", "E");
 		
-		service.gerarCsv(grafoLetras, "grafoLetras");
+		csvService.gerarCsv(grafoLetras, "grafoLetras");
 		
 		
 		ForkMatrizAdjacencia grafoUF = new ForkMatrizAdjacencia(4);
@@ -53,6 +53,39 @@ public class csvTestMain {
 		grafoUF.inserirAresta("SP", "MG");
 		grafoUF.inserirAresta("SP", "RJ");
 		
-		service.gerarCsv(grafoUF, "Estados Sudeste");
+		csvService.gerarCsv(grafoUF, "Estados Sudeste");
+		
+		
+		
+		//Leitura dos arquivos CSV
+		
+		List<List<String>> arquivoLido1 = csvService.lerCsv("grafoLetras");
+		arquivoLido1.forEach(linha -> {
+			if(arquivoLido1.indexOf(linha) == 0){
+				System.out.print(" ");
+			}
+			linha.stream().forEach(palavra -> {
+				System.out.print("   " + palavra);
+			});
+			
+			System.out.println();
+		});
+		
+		System.out.println();
+		
+		
+		List<List<String>> arquivoLido2 = csvService.lerCsv("Estados Sudeste");
+		arquivoLido2.forEach(linha -> {
+			if(arquivoLido1.indexOf(linha) == 0){
+				System.out.print(" ");
+			}
+			linha.stream().forEach(palavra -> {
+				System.out.print("   " +palavra);
+			});
+			
+			System.out.println();
+		});
+		
+		System.out.println();
 	}
 }

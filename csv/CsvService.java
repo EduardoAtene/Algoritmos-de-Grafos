@@ -1,6 +1,9 @@
 package csv;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -8,13 +11,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import com.opencsv.CSVWriter;
 
 import ForkLibary.Entity.ForkMatrizAdjacencia;
-import ForkLibary.Entity.ForkEntity.Vertice;
 
 public class CsvService {
 
@@ -90,6 +92,18 @@ public class CsvService {
     			data.get(i).add(s);
     		}
 		}
+	}
+	
+	public List<List<String>> lerCsv(String nomeArquivo) throws IOException {
+		List<List<String>> regs = new ArrayList();
+		BufferedReader br =  new BufferedReader(new FileReader(nomeArquivo + ".csv"));
+		String linha;
+		while((linha = br.readLine()) != null) {
+			String[] colunas = linha.split(";");
+			regs.add(Arrays.asList(colunas));
+		}
+		
+		return regs;
 	}
 	
 }
