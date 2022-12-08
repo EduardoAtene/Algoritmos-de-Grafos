@@ -6,7 +6,7 @@ public abstract class ForkEntity {
         /*
          * Classe Responsável por Gerenciar os Vértices do Grafo.
          * 
-         * Para Grafos Direcionados: A criação
+         * Para Grafos Direcionados: A criaÃ§Ã£o
          * 
          * Observação:   A Aresta não trata Peso que não seja um valor número. Ou seja, para adjacência
          *              que contém o peso tratado e equivalente a uma string, VAI DAR MERDA.
@@ -139,5 +139,11 @@ public abstract class ForkEntity {
 
     public Integer quantidadeVertices;
     public Integer quantidadeArestas;
+    
+    public Integer getQtdeVertices() {
+    	return this.quantidadeVertices;
+    }
+    
+   
 
 }
