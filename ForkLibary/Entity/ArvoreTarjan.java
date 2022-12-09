@@ -10,7 +10,7 @@ import org.w3c.dom.Entity;
 import java.util.Map;
 import ForkLibary.Entity.ForkEntity.Aresta;
 
-public class ArvoreProfundidade{
+public class ArvoreTarjan{
 
     public ArvoreElement<VerticesElement> raiz;
     public boolean direction = false;
@@ -82,12 +82,12 @@ public class ArvoreProfundidade{
     /**
      * Arvore Elemento
      */
-    public class ArvoreElement<TIPO extends ArvoreProfundidade.VerticesElement> {
+    public class ArvoreElement<TIPO extends ArvoreTarjan.VerticesElement> {
         public ForkEntity.Aresta arestaP;
-        public ArvoreProfundidade.VerticesElement vertice;
+        public ArvoreTarjan.VerticesElement vertice;
         public Boolean isPonte;
-        public ArvoreElement<ArvoreProfundidade.VerticesElement> keyDireita;
-        public ArvoreElement<ArvoreProfundidade.VerticesElement> keyEsquerda;
+        public ArvoreElement<ArvoreTarjan.VerticesElement> keyDireita;
+        public ArvoreElement<ArvoreTarjan.VerticesElement> keyEsquerda;
 
         public ArvoreElement (TIPO newAresta){
             this.vertice = newAresta;
@@ -127,10 +127,10 @@ public class ArvoreProfundidade{
             return this.isPonte;
         }
         
-        public ArvoreElement<ArvoreProfundidade.VerticesElement> getKeyDireita() {
+        public ArvoreElement<ArvoreTarjan.VerticesElement> getKeyDireita() {
             return keyDireita;
         }
-        public void setKeyDireita(ArvoreElement<ArvoreProfundidade.VerticesElement> keyDireita) {
+        public void setKeyDireita(ArvoreElement<ArvoreTarjan.VerticesElement> keyDireita) {
             this.keyDireita = keyDireita;
         }
 
@@ -146,7 +146,7 @@ public class ArvoreProfundidade{
     }
 
 
-    public ArvoreProfundidade() {
+    public ArvoreTarjan() {
         this.raiz = null;
         this.interactionAux = 0;        
         this.PE = new HashMap<Object,Integer>();        
@@ -158,50 +158,19 @@ public class ArvoreProfundidade{
 
     }
 
-
-    public void newChild (ForkEntity.Aresta aresta,Boolean direita){
-        if(raiz == null){
-            this.raiz = new ArvoreElement<ForkEntity.Aresta>(aresta);
-        }else{
-            if(direita){
-
-            }else{
-
-            }
-            while (true) {
-                
-            }
-        }
-        this.quantidadeVertices = quantidadeVertice;
-
-        // Geração da Matriz Vazia
-        this.matriz = new Double [quantidadeVertice] [quantidadeVertice] ;
-        this.gerarMatrizVazia(quantidadeVertice);
-    }
-    
-
-    public void busca (ForkListAdjacencia grafo,ForkEntity.Vertice vertice,Boolean direcionado,Object daddyVertice,ArvoreElement<ArvoreProfundidade.VerticesElement> atual,Integer bloco){
+    public void buscaTarjan (ForkListAdjacencia grafo,ForkEntity.Vertice vertice,Boolean direcionado,Object daddyVertice,ArvoreElement<ArvoreTarjan.VerticesElement> atual,Integer bloco){
         VerticesElement vElement = new VerticesElement(vertice);
         vElement.setBloco(bloco);
-
         this.PE.put(vertice.getNome(), this.interactionAux);
-
         if(!this.verticesVisitado.contains(vertice.getNome())){
-
             this.verticesVisitado.add(vertice.getNome());
             if(atual == null){
-                this.raiz = new ArvoreElement<ArvoreProfundidade.VerticesElement>(vElement);
-
+                this.raiz = new ArvoreElement<ArvoreTarjan.VerticesElement>(vElement);
                 this.interactionAux = 1;
-    
                 atual = this.raiz;
-
-                // busca(grafo,vertice,direcionado,grafo.getVertice(arestaAdj.getVertice_1()),atual,bloco);
             }
                 atual.setVer(vElement);
-            
-
-
+    
         }
         ArrayList<ForkEntity.Aresta> conjuntoAdjacencia = grafo.getVerticesAdjacentesByVerticesDaddy(vertice.getNome(), direcionado, null);
 
@@ -218,44 +187,30 @@ public class ArvoreProfundidade{
                     this.arestasVisitadas.add(arestVistAux);
 
                     ForkEntity.Vertice vertAdj = grafo.getVertice(arestaAdj.getVertice_1());
-                    // VerticesElement vElement = new VerticesElement(vertAdj);
-                    // this.verticesVisitado.add(arestaAdj.getVertice_1());
 
                     vElement.setArestasExploradas(arestaAdj,false);
                     if(atual.getKeyEsquerda() == null){
-                        atual.setKeyEsquerda(new ArvoreElement<ArvoreProfundidade.VerticesElement>());
-                        ArvoreElement<ArvoreProfundidade.VerticesElement> atualE = atual.getKeyEsquerda();
+                        atual.setKeyEsquerda(new ArvoreElement<ArvoreTarjan.VerticesElement>());
+                        ArvoreElement<ArvoreTarjan.VerticesElement> atualE = atual.getKeyEsquerda();
                         atualE.setAresta(arestaAdj);
-                        busca(grafo,vertAdj,direcionado,vertice.getNome(),atualE,bloco);
+                        buscaTarjan(grafo,vertAdj,direcionado,vertice.getNome(),atualE,bloco);
 
                     }else if (atual.getKeyDireita() == null){
-                        atual.setKeyDireita(new ArvoreElement<ArvoreProfundidade.VerticesElement>());
-                        ArvoreElement<ArvoreProfundidade.VerticesElement> atualR = atual.getKeyDireita();
+                        atual.setKeyDireita(new ArvoreElement<ArvoreTarjan.VerticesElement>());
+                        ArvoreElement<ArvoreTarjan.VerticesElement> atualR = atual.getKeyDireita();
                         atualR.setAresta(arestaAdj);
-                        busca(grafo,vertAdj,direcionado,vertice.getNome(),atualR,bloco);
+                        buscaTarjan(grafo,vertAdj,direcionado,vertice.getNome(),atualR,bloco);
                     }
 
                 }else{
-                    preOrdemFind(this.raiz,arestaAdj.getVertice_1(),null);
-                    // if(aux != null){
-                    //     setFindCicloBack(aux,aux.vertice.getBloco());
-                    // }
+                    // Aresta Retorno
+                    backRaizRetorno(this.raiz,arestaAdj.getVertice_1(),null);
                 }
             }
         }
-        
-        
-        // this.verticesVisitados.get(vertice.getNome()).setExplorado(true);
         this.PS.put(vertice.getNome(), this.interactionAux);
 
 
-    }
-    public void setFindCicloBack(ArvoreElement<VerticesElement> atual,Integer Bloco){
-        if (atual != null){
-            atual.vertice.setBloco(Bloco);
-            setFindCicloBack(atual.getKeyEsquerda(),Bloco);
-            setFindCicloBack(atual.getKeyDireita(),Bloco);
-        }        
     }
 
     public void emOrdem(ArvoreElement<VerticesElement> atual){
@@ -269,12 +224,8 @@ public class ArvoreProfundidade{
     public void preOrdemPrint(ArvoreElement<VerticesElement>atual){
         if (atual != null){
             System.out.println(atual.vertice.getNome() +" | "+ atual.vertice.getBloco());
-            // ArvoreElement<Arvore.VerticesElement> atualE = atual.getKeyEsquerda();
-            // preOrdemPrint(atualE.getKeyEsquerda());            
             preOrdemPrint(atual.getKeyEsquerda());            
             preOrdemPrint(atual.getKeyDireita());            
-            // ArvoreElement<Arvore.VerticesElement> atualR = atual.getKeyDireita();
-            // preOrdemPrint(atualR.getKeyDireita());
         }        
     }
 
@@ -284,7 +235,7 @@ public class ArvoreProfundidade{
         }
     }
     
-    public void preOrdemFind(ArvoreElement<VerticesElement> atual, Object verticeElemento, Integer bloco){
+    public void backRaizRetorno(ArvoreElement<VerticesElement> atual, Object verticeElemento, Integer bloco){
         if (atual != null){
             if(atual.vertice.getNome() == verticeElemento){
                 bloco = atual.vertice.getBloco();
@@ -293,8 +244,8 @@ public class ArvoreProfundidade{
             if(bloco != null){
                 atual.vertice.setBloco(bloco);
             }
-            preOrdemFind(atual.getKeyEsquerda(),verticeElemento,bloco);
-            preOrdemFind(atual.getKeyDireita(),verticeElemento,bloco);
+            backRaizRetorno(atual.getKeyEsquerda(),verticeElemento,bloco);
+            backRaizRetorno(atual.getKeyDireita(),verticeElemento,bloco);
         }
     }
     
@@ -308,7 +259,6 @@ public class ArvoreProfundidade{
     }
 
 
-    
     public Boolean arestaVisitada(Object vertice1, Object vertice2){
         for (int i = 0; i < this.arestasVisitadas.size(); i++) {
             if(this.arestasVisitadas.get(i).contains(vertice1) && this.arestasVisitadas.get(i).contains(vertice2))
@@ -322,6 +272,7 @@ public class ArvoreProfundidade{
         posOrdemSearchPonte(this.raiz);
         return this.arestasPontes;
     }
+
     public void posOrdemSearchPonte(ArvoreElement<VerticesElement> atual){
         if (atual != null){
             if(atual.getKeyEsquerda() != null){
@@ -341,7 +292,6 @@ public class ArvoreProfundidade{
         }
     }
     
-
     public ArvoreElement<VerticesElement> getArvoreProfundidade(){
         return this.raiz;
     };

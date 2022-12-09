@@ -3,12 +3,12 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import ForkLibary.Entity.ForkMatrizAdjacencia;
-import ForkLibary.Entity.ArvoreProfundidade.VerticesElement;
+import ForkLibary.Entity.ArvoreTarjan.VerticesElement;
 import ForkLibary.Entity.ForkEntity.Aresta;
 import ForkLibary.Entity.ForkEntity.Vertice;
 import ForkLibary.Entity.ForkListAdjacencia;
 import ForkLibary.Entity.AlgoritmoFleury;
-import ForkLibary.Entity.ArvoreProfundidade;
+import ForkLibary.Entity.ArvoreTarjan;
 import ForkLibary.Log.LogModel;
 import ForkLibary.ManipuladorArquivo.ManipuladorArquivo;
 import ForkLibary.ManipuladorArquivo.Configuration.Configuracao;
@@ -262,7 +262,7 @@ class Principal {
          */ 
         // Arvore a = new Arvore();
         // Vertice v = forkListAdj.getVertice('c');
-        // a.busca(forkListAdj,v, false,null,null,1);
+        // a.buscaTarjan(forkListAdj,v, false,null,null,1);
         // a.preOrdemPrint(a.getArvoreProfundidade());
         // a.printPontes();
         // ArrayList<ForkEntity.Aresta> conjuntoAdjacencia = forkListAdj.getVerticesAdjacentesByVertices('c', false, false);
