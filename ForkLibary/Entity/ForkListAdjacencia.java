@@ -39,7 +39,31 @@ public class ForkListAdjacencia extends ForkEntity{
     public Map<Object,ForkEntity.Vertice> vertice = new HashMap<Object,ForkEntity.Vertice>();
     // public LinkedList<LinkedList<Integer>> listaAdjacencia 
 
-    public Double[][] matriz;
+    
+    class grauVerticesEntry{
+        public Integer grau;
+        
+        public grauVerticesEntry (Integer valor){
+            this.grau = valor;
+        }
+
+        public Integer getGrau() {
+            return grau;
+        }
+
+        public void setGrau(Integer grau) {
+            this.grau = grau;
+        }
+        public void setGrau(Boolean diminuirUm) {
+            if(diminuirUm)
+                this.grau--;
+            else
+                this.grau++;
+
+        }
+
+    }
+
 
     public ForkListAdjacencia() {
     }
@@ -77,6 +101,7 @@ public class ForkListAdjacencia extends ForkEntity{
             LinkedList<Map<Object, Aresta>> auxListAdj = this.listaAdjacencia.get(key);
 
             auxVertice = this.vertice.get(key);
+            auxVertice.setNome(nomeVertice);
             this.vertice.put(nomeVertice,this.vertice.remove(key));
             this.listaAdjacencia.remove(key);
             this.listaAdjacencia.put(nomeVertice,auxListAdj);
@@ -172,6 +197,47 @@ public class ForkListAdjacencia extends ForkEntity{
         
         return this.vertice.size();
     };
+    
+    public ForkEntity.Vertice getVertice ( Object vertice) {
+        ForkEntity.Vertice v = this.vertice.get(vertice);
+        if(v != null)
+            return v; // Retorna o vertice
+        return v;
+    }
+    public ForkEntity.Aresta getVerticeAdjacencia(Object vertice1,Object vertice2){
+        ForkEntity.Aresta Aresta = null;
+        Boolean removeSomeone = false;
+        if(this.vertice.get(vertice1) != null && this.vertice.get(vertice2) != null ){
+            if(this.doVerticeExistAdjacencia(vertice1) || this.doVerticeExistAdjacencia(vertice2)){
+                for (Map.Entry<Object,LinkedList<Map<Object,ForkEntity.Aresta>>> lista : this.listaAdjacencia.entrySet()) {    
+                    if(lista.getValue() != null){
+                        int tamanho =  lista.getValue().size();
+                        for (int i = 0; i < tamanho; i++) { 
+                            for (Map.Entry<Object,ForkEntity.Aresta> aresta : lista.getValue().get(i).entrySet()) {
+                                if( (aresta.getValue().getVertice_1() == vertice1 || aresta.getValue().getVertice_2() == vertice1) &&
+                                    (aresta.getValue().getVertice_1() == vertice2 || aresta.getValue().getVertice_2() == vertice2)
+                                ){
+                                    Aresta = aresta.getValue();
+                                }
+                            }
+                        } 
+                    }
+                }
+            }
+        }
+        return Aresta;
+    };
+
+    public Map<Object,grauVerticesEntry> getGrausGrafos(){
+        Map<Object,grauVerticesEntry> grausVertices = new HashMap<Object,grauVerticesEntry>();
+        for (Map.Entry<Object,LinkedList<Map<Object,ForkEntity.Aresta>>> lista : this.listaAdjacencia.entrySet()) {    
+            if(lista.getValue() != null){
+                int tamanho =  lista.getValue().size();
+                grausVertices.put(lista.getKey(), new grauVerticesEntry(tamanho));
+            }
+        }
+        return grausVertices;
+    };
 
     public ArrayList<ForkEntity.Aresta> getVerticesAdjacentesByVertices(Object vertice,Boolean includeHas,Boolean removeAllAdij){
         ArrayList<ForkEntity.Aresta> keysVertices = new ArrayList<ForkEntity.Aresta>(); // Create an ArrayList object
@@ -200,6 +266,43 @@ public class ForkListAdjacencia extends ForkEntity{
                             // keysVertices.add(aresta.getValue());
 
                         }
+                        } 
+                    }
+                }
+                return keysVertices; //Retornando adjacencias
+            }else{
+                return keysVertices; //Vertice não possui adjacencia
+            }
+        }else{
+            return keysVertices; //Vertice não existe
+        }      
+    };
+
+    public ArrayList<ForkEntity.Aresta> getVerticesAdjacentesByVerticesDaddy(Object vertice,Boolean includeHas,Object daddyVertice){
+        ArrayList<ForkEntity.Aresta> keysVertices = new ArrayList<ForkEntity.Aresta>(); // Create an ArrayList object
+        if(this.vertice.get(vertice) != null ){
+            if(this.doVerticeExistAdjacencia(vertice)){
+                for (Map.Entry<Object,LinkedList<Map<Object,ForkEntity.Aresta>>> lista : this.listaAdjacencia.entrySet()) {    
+                    if(lista.getValue() != null){
+                        int tamanho =  lista.getValue().size();
+                        for (int i = 0; i < tamanho; i++) {   
+                            for (Map.Entry<Object,ForkEntity.Aresta> aresta : lista.getValue().get(i).entrySet()) {
+                                if(includeHas){
+                                    if(aresta.getValue().getVertice_1() == vertice){
+                                        keysVertices.add(aresta.getValue());
+                                    }
+                                }
+                                if(daddyVertice == null){
+                                    if(aresta.getValue().getVertice_2() == vertice){
+                                        keysVertices.add(aresta.getValue());                              
+                                    }
+                                }else{
+                                    if(aresta.getValue().getVertice_1() == vertice && aresta.getValue().getVertice_2() != daddyVertice){
+                                        keysVertices.add(aresta.getValue());                              
+                                    }
+                                }
+                            }
+
                         } 
                     }
                 }
@@ -388,24 +491,35 @@ public class ForkListAdjacencia extends ForkEntity{
 
     public Boolean removeAresta(Object vertice1, Object vertice2) {
         Boolean removeSomeone = false;
+        Map<Object,Integer> indexRemove = new HashMap<Object,Integer>();
+
         if(this.vertice.get(vertice1) != null && this.vertice.get(vertice2) != null ){
             if(this.doVerticeExistAdjacencia(vertice1) || this.doVerticeExistAdjacencia(vertice2)){
                 for (Map.Entry<Object,LinkedList<Map<Object,ForkEntity.Aresta>>> lista : this.listaAdjacencia.entrySet()) {    
                     if(lista.getValue() != null){
                         int tamanho =  lista.getValue().size();
+
                         for (int i = 0; i < tamanho; i++) { 
-                            for (Map.Entry<Object,ForkEntity.Aresta> aresta : lista.getValue().get(i).entrySet()) {
-                                if( (aresta.getValue().getVertice_1() == vertice1 || aresta.getValue().getVertice_2() == vertice1) &&
-                                    (aresta.getValue().getVertice_1() == vertice2 || aresta.getValue().getVertice_2() == vertice2)
-                                ){
-                                    this.listaAdjacencia.get(lista.getKey()).remove(i); 
-                                    removeSomeone = true;
+                            if(lista.getValue().get(i) != null){
+                                for (Map.Entry<Object,ForkEntity.Aresta> aresta : lista.getValue().get(i).entrySet()) {
+                                    if(aresta.getValue() != null){
+                                        if( (aresta.getValue().getVertice_1() == vertice1 || aresta.getValue().getVertice_2() == vertice1) &&
+                                            (aresta.getValue().getVertice_1() == vertice2 || aresta.getValue().getVertice_2() == vertice2)
+                                        ){
+                                            removeSomeone = true;
+                                            indexRemove.put(lista.getKey(),i);
+                                        }
+                                    }
                                 }
                             }
-                        } 
+                        }
+
                     }
                 }
             }
+        }
+        for (Map.Entry<Object,Integer> index : indexRemove.entrySet()) {
+            this.listaAdjacencia.get(index.getKey()).remove((int)index.getValue()); 
         }
         return removeSomeone;
     }

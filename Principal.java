@@ -3,8 +3,12 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import ForkLibary.Entity.ForkMatrizAdjacencia;
+import ForkLibary.Entity.Arvore.VerticesElement;
 import ForkLibary.Entity.ForkEntity.Aresta;
+import ForkLibary.Entity.ForkEntity.Vertice;
 import ForkLibary.Entity.ForkListAdjacencia;
+import ForkLibary.Entity.AlgoritmoFleury;
+import ForkLibary.Entity.Arvore;
 import ForkLibary.Log.LogModel;
 import ForkLibary.ManipuladorArquivo.ManipuladorArquivo;
 import ForkLibary.ManipuladorArquivo.Configuration.Configuracao;
@@ -48,7 +52,7 @@ class Principal {
          *      Return Case : ForkListAdjacencia Entry/Objeto/Entidade
          */
         
-        ForkListAdjacencia forkListAdj = new ForkListAdjacencia(8);
+        ForkListAdjacencia forkListAdj = new ForkListAdjacencia(7);
 
         /**
          *      OPERAÇÕES DAS VERTICES
@@ -59,8 +63,8 @@ class Principal {
          *      Functiton   : inserirVertice()
          *      Return Case : True
          */ 
-        forkListAdj.inserirVertice(18);
-        forkListAdj.inserirVertice(23);
+        // forkListAdj.inserirVertice(18);
+        // forkListAdj.inserirVertice(23);
 
         /**     INSERINDO NÃO EXISTENTES VÉRTICES
          * 
@@ -76,10 +80,18 @@ class Principal {
          *      Functiton   : rotularVertice()
          *      Return Case : True. Rotulou com sucesso.
          */      
-        forkListAdj.rotularVertice(1,"Vertice_Gabriel");
-        forkListAdj.rotularVertice(2,"Vertice A");
-        forkListAdj.rotularVertice(3,"Vertice B");
-        forkListAdj.rotularVertice("Vertice B","Vertice X");
+        // forkListAdj.rotularVertice(1,"Vertice_Gabriel");
+        // forkListAdj.rotularVertice(2,"Vertice A");
+        // forkListAdj.rotularVertice(3,"Vertice B");
+        // forkListAdj.rotularVertice("Vertice B","Vertice X");
+
+        forkListAdj.rotularVertice(1,'a');
+        forkListAdj.rotularVertice(2,'b');
+        forkListAdj.rotularVertice(3,'c');
+        forkListAdj.rotularVertice(4,'d');
+        forkListAdj.rotularVertice(5,'e');
+        forkListAdj.rotularVertice(6,'f');
+        forkListAdj.rotularVertice(7,'g');
 
         /**
          *      ROTULANDO VÉRTICES NÃO EXISTENTES
@@ -129,14 +141,23 @@ class Principal {
          *      Functiton   : inserirAresta()
          *      Return Case : True. Funcionou
          */ 
-        forkListAdj.inserirAresta("Vertice X",4,(double) 4);
-        forkListAdj.inserirAresta("Vertice X","Vertice A");
-        forkListAdj.inserirAresta("Vertice X","Vertice_Gabriel",(double) 10);
-        forkListAdj.inserirAresta(7,4,(double) 4);
-        forkListAdj.inserirAresta(6,7);
-        forkListAdj.inserirAresta(8,7,(double) 2.5);
+        // forkListAdj.inserirAresta("Vertice X",4,(double) 4);
+        // forkListAdj.inserirAresta("Vertice X","Vertice A");
+        // forkListAdj.inserirAresta("Vertice X","Vertice_Gabriel",(double) 10);
+        // forkListAdj.inserirAresta(7,4,(double) 4);
+        // forkListAdj.inserirAresta(6,7);
+        // forkListAdj.inserirAresta(8,7,(double) 2.5);
 
-
+        forkListAdj.inserirAresta('a','b'); // a - b
+        forkListAdj.inserirAresta('a','c'); // a - c
+        // forkListAdj.inserirAresta('a','d'); // b - c
+        forkListAdj.inserirAresta('b','d'); // b - d
+        forkListAdj.inserirAresta('c','d'); // c - d
+        forkListAdj.inserirAresta('c','e'); // c - e
+        // forkListAdj.inserirAresta('d','e'); // d - e
+        forkListAdj.inserirAresta('e','f'); // e - f
+        forkListAdj.inserirAresta('e','g'); // e - g
+        forkListAdj.inserirAresta('f','g'); // f - g
 
         // TESTE EM GERAL
 
@@ -217,14 +238,40 @@ class Principal {
              *                        2) False    : O Grafo instanciado não é Nulo. Ou seja, possui aresta.
              * 
              */ 
-        System.out.println(forkListAdj.isForkCompleto());
+            // System.out.println(forkListAdj.isForkCompleto());
+            /**     CHEGANDO SE É UM GRAFO COMPLETO
+             * 
+             *      Functiton   : isForkNulo()
+             *      Return Case : True and False
+             *                        1) True     : O Grafo instanciado é Nulo. Ou seja, não possui nenhuma aresta.
+             *                        2) False    : O Grafo instanciado não é Nulo. Ou seja, possui aresta.
+             * 
+             */ 
+            // for (ForkEntity.Aresta string : forkListAdj.getVerticesAdjacentesByVertices("Vertice X",false,false)) {
+            // System.out.println(string.getVertice_2());
+                
+            // }
+            
+
 
         /**     IMPRIMINDO GRAFOS
          * 
          *      Functiton               : printGrafoAdjacencia()
          *      Return StorageDisplay   : Imprimi no terminal o grafo no formato de uma lista encademada 
          */ 
+        // Arvore a = new Arvore();
+        // Vertice v = forkListAdj.getVertice('c');
+        // a.busca(forkListAdj,v, false,null,null,1);
+        // a.preOrdemPrint(a.getArvoreProfundidade());
+        // a.printPontes();
+        // ArrayList<ForkEntity.Aresta> conjuntoAdjacencia = forkListAdj.getVerticesAdjacentesByVertices('c', false, false);
+
+        AlgoritmoFleury fleury = new AlgoritmoFleury(forkListAdj);
+        // forkListAdj.printGrafoAdjacencia();
+        // System.out.println(forkListAdj.removeAresta('a','c'));
         forkListAdj.printGrafoAdjacencia();
+        // a.printPontes();
+
 
     }
 

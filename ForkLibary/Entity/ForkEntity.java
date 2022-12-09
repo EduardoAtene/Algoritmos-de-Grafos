@@ -44,6 +44,10 @@ public abstract class ForkEntity {
             this.peso = peso;
         }
 
+        public void setNome(Object nome){
+            this.nome = nome;
+        }
+
     }
 
 
