@@ -8,7 +8,13 @@ import ForkLibary.Entity.ForkListAdjacencia.grauVerticesEntry;
 
 public class AlgoritmoFleury{
     public Boolean isEureliano;
+    public long startNaive;
+    public long startTarjan;
 
+    public long endNaive;
+    public long endTarjan;
+    // execução do método
+    
     ForkListAdjacencia grafoListaAdjacenciaAux;
 
     public Map<Object,grauVerticesEntry> verticesGrau;
@@ -28,12 +34,19 @@ public class AlgoritmoFleury{
 
             if(this.verticesGrauImpar.size() == 0){
                 for (Object verticesInicio : verticesGrauPar) {
-                    getCaminhoEureliano(this.grafoListaAdjacenciaAux,verticesInicio);
+                    getCaminhoEurelianoNaive(this.grafoListaAdjacenciaAux,verticesInicio);
                     break; // Pegar Só um Caminho.
                 }
             }else{
                 for (Object verticesInicio : verticesGrauImpar) {
-                    getCaminhoEureliano(this.grafoListaAdjacenciaAux,verticesInicio);
+                    this.startNaive = System.currentTimeMillis();
+                    getCaminhoEurelianoNaive(this.grafoListaAdjacenciaAux,verticesInicio);
+                    this.endNaive = (System.currentTimeMillis() - this.startNaive ) / 1000;
+
+                    this.startTarjan = System.currentTimeMillis();
+                    getCaminhoEurelianoTarjan(this.grafoListaAdjacenciaAux, verticesInicio);
+                    this.endTarjan = (System.currentTimeMillis() - this.startNaive) /1000;
+
                     break; // Pegar Só um Caminho.
                 }
             }
@@ -42,7 +55,33 @@ public class AlgoritmoFleury{
         }
     }
 
-    public void getCaminhoEureliano(ForkListAdjacencia grafoListaAdjacencia,Object verticeR){
+    public void getCaminhoEurelianoNaive(ForkListAdjacencia grafoListaAdjacencia,Object verticeR){
+
+        AlgoritmoNaive algoritmoNaive = new AlgoritmoNaive(grafoListaAdjacencia);
+        ArrayList<ForkEntity.Aresta> pontesArvore = algoritmoNaive.getArestasPontes();
+
+        ArrayList<ForkEntity.Aresta> conjuntoAdjacencia = grafoListaAdjacencia.getVerticesAdjacentesByVertices(verticeR, false, false);
+
+        if(conjuntoAdjacencia.size() != 0){
+            for (ForkEntity.Aresta arestaAdj : conjuntoAdjacencia) {
+                Boolean isPonte = isArestaPonte(arestaAdj,pontesArvore);
+                if(!isPonte || (isPonte && conjuntoAdjacencia.size() == 1)){
+                    this.verticesGrau.get(arestaAdj.getVertice_1()).setGrau(true);
+                    this.verticesGrau.get(arestaAdj.getVertice_2()).setGrau(true);
+                    this.caminho.add(verticeR);
+                    grafoListaAdjacencia.removeAresta(arestaAdj.getVertice_1(),arestaAdj.getVertice_2());
+                    getCaminhoEurelianoNaive(grafoListaAdjacencia,arestaAdj.getVertice_2());
+                    break;
+                }
+            }
+        }else{
+            this.caminho.add(verticeR);
+        }
+
+    }
+
+    
+    public void getCaminhoEurelianoTarjan(ForkListAdjacencia grafoListaAdjacencia,Object verticeR){
 
         ArvoreTarjan arvoreProfundidade = new ArvoreTarjan();
         Vertice verticeRaiz = grafoListaAdjacencia.getVertice(verticeR);
@@ -59,7 +98,7 @@ public class AlgoritmoFleury{
                     this.verticesGrau.get(arestaAdj.getVertice_2()).setGrau(true);
                     this.caminho.add(verticeR);
                     grafoListaAdjacencia.removeAresta(arestaAdj.getVertice_1(),arestaAdj.getVertice_2());
-                    getCaminhoEureliano(grafoListaAdjacencia,arestaAdj.getVertice_2());
+                    getCaminhoEurelianoTarjan(grafoListaAdjacencia,arestaAdj.getVertice_2());
                     break;
                 }
             }
@@ -100,5 +139,12 @@ public class AlgoritmoFleury{
                 }
         }
         return false;
+    }
+
+    public void getTimeNaive(){
+        System.out.println("Tempo Naive: "+this.endTarjan);
+    }
+    public void getTimeTarjam(){
+        System.out.println("Tempo Tarjam: "+this.endTarjan);
     }
 }

@@ -8,6 +8,7 @@ import ForkLibary.Entity.ForkEntity.Aresta;
 import ForkLibary.Entity.ForkEntity.Vertice;
 import ForkLibary.Entity.ForkListAdjacencia;
 import ForkLibary.Entity.AlgoritmoFleury;
+import ForkLibary.Entity.AlgoritmoNaive;
 import ForkLibary.Entity.ArvoreTarjan;
 import ForkLibary.Log.LogModel;
 import ForkLibary.ManipuladorArquivo.ManipuladorArquivo;
@@ -53,7 +54,7 @@ class Principal {
          *      Return Case : ForkListAdjacencia Entry/Objeto/Entidade
          */
         
-        ForkListAdjacencia forkListAdj = new ForkListAdjacencia(7);
+        ForkListAdjacencia forkListAdj = new ForkListAdjacencia(5);
 
         /**
          *      OPERAÇÕES DAS VERTICES
@@ -151,14 +152,14 @@ class Principal {
 
         forkListAdj.inserirAresta('a','b'); // a - b
         forkListAdj.inserirAresta('a','c'); // a - c
-        // forkListAdj.inserirAresta('a','d'); // b - c
+        forkListAdj.inserirAresta('a','d'); // b - c
         forkListAdj.inserirAresta('b','d'); // b - d
-        forkListAdj.inserirAresta('c','d'); // c - d
+        // forkListAdj.inserirAresta('c','d'); // c - d
         forkListAdj.inserirAresta('c','e'); // c - e
         // forkListAdj.inserirAresta('d','e'); // d - e
-        forkListAdj.inserirAresta('e','f'); // e - f
-        forkListAdj.inserirAresta('e','g'); // e - g
-        forkListAdj.inserirAresta('f','g'); // f - g
+        // forkListAdj.inserirAresta('e','f'); // e - f
+        // forkListAdj.inserirAresta('e','g'); // e - g
+        // forkListAdj.inserirAresta('f','g'); // f - g
 
         // TESTE EM GERAL
 
@@ -267,19 +268,20 @@ class Principal {
         // a.printPontes();
         // ArrayList<ForkEntity.Aresta> conjuntoAdjacencia = forkListAdj.getVerticesAdjacentesByVertices('c', false, false);
 
-        // AlgoritmoFleury fleury = new AlgoritmoFleury(forkListAdj);
         // forkListAdj.printGrafoAdjacencia();
         // System.out.println(forkListAdj.removeAresta('a','c'));
         // forkListAdj.printGrafoAdjacencia();
 		CsvService csvService = new CsvService();
-		csvService.gerarCsv(forkListAdj, "grafoLeas");
-
-
-		List<List<String>> arquivoLido1 = csvService.lerCsv("grafoLeas");
+		// csvService.gerarCsv(forkListAdj, "grafoLeas");
+		List<List<String>> arquivoLido1 = csvService.lerCsv("grafo2k");
         ForkListAdjacencia forkListAdjFile = new ForkListAdjacencia();
         forkListAdjFile.setGrafoByCsv(arquivoLido1);
-
-
+        AlgoritmoFleury fleury = new AlgoritmoFleury(forkListAdjFile);
+        fleury.getTimeNaive();
+        fleury.getTimeTarjam();
+        
+        // forkListAdjFile.getAllAjacencia();
+        // AlgoritmoNaive algNaive = new AlgoritmoNaive(forkListAdj);
 		// arquivoLido1.forEach(linha -> {
 		// 	if(arquivoLido1.indexOf(linha) == 0){
 		// 		System.out.print(" ");
@@ -291,12 +293,12 @@ class Principal {
 		// 	System.out.println();
 		// });
         
-        forkListAdj.printGrafoAdjacencia();
+        // forkListAdjFile.printGrafoAdjacencia();
 		
 		System.out.println();
 		System.out.println();
 		System.out.println();
-        forkListAdjFile.printGrafoAdjacencia();
+        // forkListAdjFile.printGrafoAdjacencia();
         
 		
         // a.printPontes();

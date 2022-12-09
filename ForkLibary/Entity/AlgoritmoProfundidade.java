@@ -1,28 +1,29 @@
 package ForkLibary.Entity;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.w3c.dom.Entity;
-
-import java.util.Map;
-import ForkLibary.Entity.ForkEntity.Aresta;
+import ForkLibary.Entity.ForkEntity.Vertice;
 
 public class AlgoritmoProfundidade{
 
     public ArvoreElement<VerticesElement> raiz;
+    ForkListAdjacencia grafoListaAdjacencia;
+
     public boolean direction = false;
 
     public Map<Object,Integer> PE;
     public Map<Object,Integer> PS;
     public Integer interactionAux;
 
-    public Map<Object,VerticesElement> verticesVisitados;
+    public Object verticeInicio;
+    public Object verticeFinal;
+
+    public boolean hasCaminho;
+
     public ArrayList<Object> verticesVisitado;
     public ArrayList<ArrayList<Object>> arestasVisitadas;
-    public ArrayList<ForkEntity.Aresta> arestasPontes;
 
 
     public class VerticesElement extends ForkEntity.Vertice {
@@ -119,15 +120,13 @@ public class AlgoritmoProfundidade{
         this.raiz = null;
         this.interactionAux = 0;        
         this.PE = new HashMap<Object,Integer>();        
-        this.PS = new HashMap<Object,Integer>();        
-        this.verticesVisitados = new HashMap<Object,VerticesElement>();        
+        this.PS = new HashMap<Object,Integer>();          
         this.verticesVisitado = new ArrayList<Object>();        
         this.arestasVisitadas = new ArrayList<ArrayList<Object>>();        
-        this.arestasPontes = new ArrayList<ForkEntity.Aresta>();        
 
     }
 
-    public void buscaProfundidade (ForkListAdjacencia grafo,ForkEntity.Vertice vertice,Boolean direcionado,Object daddyVertice,ArvoreElement<AlgoritmoProfundidade.VerticesElement> atual,Integer bloco){
+    public void buscaProfundidade (ForkListAdjacencia grafo,ForkEntity.Vertice vertice,Boolean direcionado,ArvoreElement<AlgoritmoProfundidade.VerticesElement> atual){
         VerticesElement vElement = new VerticesElement(vertice);
         this.PE.put(vertice.getNome(), this.interactionAux);
         if(!this.verticesVisitado.contains(vertice.getNome())){
@@ -145,8 +144,9 @@ public class AlgoritmoProfundidade{
         for (ForkEntity.Aresta arestaAdj : conjuntoAdjacencia) {
             if(!arestaVisitada(arestaAdj.getVertice_1(),arestaAdj.getVertice_2())){
                 if(!this.verticesVisitado.contains(arestaAdj.getVertice_1())){
+                    if(arestaAdj.getVertice_1() == this.verticeFinal || arestaAdj.getVertice_2() == this.verticeFinal )
+                        this.hasCaminho = true;
                     this.interactionAux ++;
-                    bloco++;
             
                     // Armazenar a visitação da aresta
                     ArrayList<Object> arestVistAux = new ArrayList<Object>();
@@ -155,21 +155,19 @@ public class AlgoritmoProfundidade{
                     this.arestasVisitadas.add(arestVistAux);
 
                     ForkEntity.Vertice vertAdj = grafo.getVertice(arestaAdj.getVertice_1());
-                    // VerticesElement vElement = new VerticesElement(vertAdj);
-                    // this.verticesVisitado.add(arestaAdj.getVertice_1());
 
                     vElement.setArestasExploradas(arestaAdj,false);
                     if(atual.getKeyEsquerda() == null){
                         atual.setKeyEsquerda(new ArvoreElement<AlgoritmoProfundidade.VerticesElement>());
                         ArvoreElement<AlgoritmoProfundidade.VerticesElement> atualE = atual.getKeyEsquerda();
                         atualE.setAresta(arestaAdj);
-                        buscaProfundidade(grafo,vertAdj,direcionado,vertice.getNome(),atualE,bloco);
+                        buscaProfundidade(grafo,vertAdj,direcionado,atualE);
 
                     }else if (atual.getKeyDireita() == null){
                         atual.setKeyDireita(new ArvoreElement<AlgoritmoProfundidade.VerticesElement>());
                         ArvoreElement<AlgoritmoProfundidade.VerticesElement> atualR = atual.getKeyDireita();
                         atualR.setAresta(arestaAdj);
-                        buscaProfundidade(grafo,vertAdj,direcionado,vertice.getNome(),atualR,bloco);
+                        buscaProfundidade(grafo,vertAdj,direcionado,atualR);
                     }
 
                 }
@@ -188,18 +186,12 @@ public class AlgoritmoProfundidade{
         }        
     }
     
-    public void preOrdemPrint(ArvoreElement<VerticesElement>atual){
+    public void preOrdem(ArvoreElement<VerticesElement>atual){
         if (atual != null){
             System.out.println(atual.vertice.getNome());
-            preOrdemPrint(atual.getKeyEsquerda());            
-            preOrdemPrint(atual.getKeyDireita());            
+            preOrdem(atual.getKeyEsquerda());            
+            preOrdem(atual.getKeyDireita());            
         }        
-    }
-
-    public void printPontes(){
-        for (ForkEntity.Aresta pontes : getArestasPontes()) {
-            System.out.println(pontes.getVertice_1() + "-> " + pontes.getVertice_2());
-        }
     }
     
     public void posOrdem(ArvoreElement<VerticesElement> atual){
@@ -211,7 +203,6 @@ public class AlgoritmoProfundidade{
         }        
     }
 
-
     public Boolean arestaVisitada(Object vertice1, Object vertice2){
         for (int i = 0; i < this.arestasVisitadas.size(); i++) {
             if(this.arestasVisitadas.get(i).contains(vertice1) && this.arestasVisitadas.get(i).contains(vertice2))
@@ -220,32 +211,26 @@ public class AlgoritmoProfundidade{
         return false;     
     }
     
-    public ArrayList<ForkEntity.Aresta> getArestasPontes(){
-        this.arestasPontes = new ArrayList<ForkEntity.Aresta>();        
-        posOrdemSearchPonte(this.raiz);
-        return this.arestasPontes;
-    }
-
-    public void posOrdemSearchPonte(ArvoreElement<VerticesElement> atual){
-        if (atual != null){
-            if(atual.getKeyEsquerda() != null){
-                if(atual.vertice.getBloco() != atual.getKeyEsquerda().vertice.getBloco()){
-                    this.arestasPontes.add(atual.getKeyEsquerda().getAresta());
-                }
-                posOrdemSearchPonte(atual.getKeyEsquerda());
-
-            }
-            if(atual.getKeyDireita() != null){
-                if(atual.vertice.getBloco() != atual.getKeyDireita().vertice.getBloco()){
-                    this.arestasPontes.add(atual.getKeyDireita().getAresta());
-                }
-                posOrdemSearchPonte(atual.getKeyDireita());
-
-            }
-        }
-    }
-    
     public ArvoreElement<VerticesElement> getArvoreProfundidade(){
         return this.raiz;
     };
+
+    
+    public void setGrafoAdjacencia(ForkListAdjacencia grafoListaAdjacencia){
+        this.grafoListaAdjacencia = grafoListaAdjacencia;
+
+    };
+
+    public Boolean removeArestaGrafo(Object vertice1, Object vertice2){
+        this.verticeInicio = vertice1;
+        this.verticeFinal = vertice2;
+        return this.grafoListaAdjacencia.removeAresta(vertice1, vertice2);
+    };
+    public Boolean isPonte(){
+        Vertice vInicio = this.grafoListaAdjacencia.getVertice(this.verticeInicio);
+        this.hasCaminho = false;
+
+        buscaProfundidade(this.grafoListaAdjacencia,vInicio,false,null);
+        return !this.hasCaminho;
+    }
 }

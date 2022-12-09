@@ -8,7 +8,7 @@ import java.util.Map;
 
 import ForkLibary.Entity.ForkEntity.Aresta;
 
-public class ForkListAdjacencia extends ForkEntity{
+public class ForkListAdjacencia extends ForkEntity {
 
     public Map<Object,LinkedList<
                         Map<Object,ForkEntity.Aresta>
@@ -75,7 +75,12 @@ public class ForkListAdjacencia extends ForkEntity{
         // Set Vertices Infomacoes
         this.setInformacaoVertices(quantidadeVertice);
     }
+    public ForkListAdjacencia (ForkListAdjacencia forkList){
+        this.listaAdjacencia = forkList.listaAdjacencia;
+        this.vertice = forkList.vertice;
+        this.quantidadeVertices = forkList.quantidadeVertices;
 
+    }
 
     private void setInformacaoVertices (int quantidadeVertice){
         int aux = 1;
@@ -210,6 +215,27 @@ public class ForkListAdjacencia extends ForkEntity{
     public Map<Object,ForkEntity.Vertice> getAllVertices() {
     	return this.vertice;
     }
+
+    public ArrayList<ForkEntity.Aresta> getAllAjacencia(){
+        ArrayList<ForkEntity.Aresta> adjacencias = new ArrayList<ForkEntity.Aresta>(); // Create an ArrayList object
+
+        for (Map.Entry<Object,LinkedList<Map<Object,ForkEntity.Aresta>>> lista : this.listaAdjacencia.entrySet()) {    
+            if(lista.getValue() != null){
+                int tamanho =  lista.getValue().size();
+                if(tamanho != 0){
+                    for (int i = 0; i < tamanho; i++) {
+                        for (Map.Entry<Object,ForkEntity.Aresta> aresta : lista.getValue().get(i).entrySet()) {
+                            if(!isArestaEquals(aresta.getValue(), adjacencias)){
+                                adjacencias.add(aresta.getValue());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return adjacencias;
+    };
+
 
     public ForkEntity.Aresta getVerticeAdjacencia(Object vertice1,Object vertice2){
         ForkEntity.Aresta Aresta = null;
@@ -576,6 +602,16 @@ public class ForkListAdjacencia extends ForkEntity{
 			
 		});
 		
+    }
+
+    private Boolean isArestaEquals(ForkEntity.Aresta aresta,ArrayList<ForkEntity.Aresta> arestasValid){
+        for (ForkEntity.Aresta ArestaPonte : arestasValid) {
+            if( (aresta.getVertice_1() == ArestaPonte.getVertice_1() && aresta.getVertice_2() == ArestaPonte.getVertice_2() ) ||
+                (aresta.getVertice_1() == ArestaPonte.getVertice_2() && aresta.getVertice_2() == ArestaPonte.getVertice_1() )    ){
+                    return true;
+                }
+        }
+        return false;
     }
 
 }
