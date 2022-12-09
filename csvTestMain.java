@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.opencsv.CSVWriter;
 
 import ForkLibary.Entity.ForkMatrizAdjacencia;
 import csv.CsvService;
@@ -23,7 +22,7 @@ public class csvTestMain {
 		grafoLetras.rotularVertice(4, "D");
 		grafoLetras.rotularVertice(5, "E");
 		
-		grafoLetras.inserirAresta("A", "A");
+		// grafoLetras.inserirAresta("A", "A");
 		grafoLetras.inserirAresta("A", "B");
 		grafoLetras.inserirAresta("A", "C");
 		grafoLetras.inserirAresta("A", "D");

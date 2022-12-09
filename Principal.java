@@ -3,15 +3,16 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import ForkLibary.Entity.ForkMatrizAdjacencia;
-import ForkLibary.Entity.Arvore.VerticesElement;
+import ForkLibary.Entity.ArvoreProfundidade.VerticesElement;
 import ForkLibary.Entity.ForkEntity.Aresta;
 import ForkLibary.Entity.ForkEntity.Vertice;
 import ForkLibary.Entity.ForkListAdjacencia;
 import ForkLibary.Entity.AlgoritmoFleury;
-import ForkLibary.Entity.Arvore;
+import ForkLibary.Entity.ArvoreProfundidade;
 import ForkLibary.Log.LogModel;
 import ForkLibary.ManipuladorArquivo.ManipuladorArquivo;
 import ForkLibary.ManipuladorArquivo.Configuration.Configuracao;
+import csv.CsvService;
 import ForkLibary.Entity.ForkEntity;
 
 import java.util.ArrayList;
@@ -266,10 +267,38 @@ class Principal {
         // a.printPontes();
         // ArrayList<ForkEntity.Aresta> conjuntoAdjacencia = forkListAdj.getVerticesAdjacentesByVertices('c', false, false);
 
-        AlgoritmoFleury fleury = new AlgoritmoFleury(forkListAdj);
+        // AlgoritmoFleury fleury = new AlgoritmoFleury(forkListAdj);
         // forkListAdj.printGrafoAdjacencia();
         // System.out.println(forkListAdj.removeAresta('a','c'));
+        // forkListAdj.printGrafoAdjacencia();
+		CsvService csvService = new CsvService();
+		csvService.gerarCsv(forkListAdj, "grafoLeas");
+
+
+		List<List<String>> arquivoLido1 = csvService.lerCsv("grafoLeas");
+        ForkListAdjacencia forkListAdjFile = new ForkListAdjacencia();
+        forkListAdjFile.setGrafoByCsv(arquivoLido1);
+
+
+		// arquivoLido1.forEach(linha -> {
+		// 	if(arquivoLido1.indexOf(linha) == 0){
+		// 		System.out.print(" ");
+		// 	}
+		// 	linha.stream().forEach(palavra -> {
+		// 		System.out.print("   " + palavra);
+		// 	});
+			
+		// 	System.out.println();
+		// });
+        
         forkListAdj.printGrafoAdjacencia();
+		
+		System.out.println();
+		System.out.println();
+		System.out.println();
+        forkListAdjFile.printGrafoAdjacencia();
+        
+		
         // a.printPontes();
 
 

@@ -10,7 +10,7 @@ import org.w3c.dom.Entity;
 import java.util.Map;
 import ForkLibary.Entity.ForkEntity.Aresta;
 
-public class Arvore{
+public class ArvoreProfundidade{
 
     public ArvoreElement<VerticesElement> raiz;
     public boolean direction = false;
@@ -82,12 +82,12 @@ public class Arvore{
     /**
      * Arvore Elemento
      */
-    public class ArvoreElement<TIPO extends Arvore.VerticesElement> {
+    public class ArvoreElement<TIPO extends ArvoreProfundidade.VerticesElement> {
         public ForkEntity.Aresta arestaP;
-        public Arvore.VerticesElement vertice;
+        public ArvoreProfundidade.VerticesElement vertice;
         public Boolean isPonte;
-        public ArvoreElement<Arvore.VerticesElement> keyDireita;
-        public ArvoreElement<Arvore.VerticesElement> keyEsquerda;
+        public ArvoreElement<ArvoreProfundidade.VerticesElement> keyDireita;
+        public ArvoreElement<ArvoreProfundidade.VerticesElement> keyEsquerda;
 
         public ArvoreElement (TIPO newAresta){
             this.vertice = newAresta;
@@ -127,10 +127,10 @@ public class Arvore{
             return this.isPonte;
         }
         
-        public ArvoreElement<Arvore.VerticesElement> getKeyDireita() {
+        public ArvoreElement<ArvoreProfundidade.VerticesElement> getKeyDireita() {
             return keyDireita;
         }
-        public void setKeyDireita(ArvoreElement<Arvore.VerticesElement> keyDireita) {
+        public void setKeyDireita(ArvoreElement<ArvoreProfundidade.VerticesElement> keyDireita) {
             this.keyDireita = keyDireita;
         }
 
@@ -146,7 +146,7 @@ public class Arvore{
     }
 
 
-    public Arvore() {
+    public ArvoreProfundidade() {
         this.raiz = null;
         this.interactionAux = 0;        
         this.PE = new HashMap<Object,Integer>();        
@@ -180,7 +180,7 @@ public class Arvore{
     }
     
 
-    public void busca (ForkListAdjacencia grafo,ForkEntity.Vertice vertice,Boolean direcionado,Object daddyVertice,ArvoreElement<Arvore.VerticesElement> atual,Integer bloco){
+    public void busca (ForkListAdjacencia grafo,ForkEntity.Vertice vertice,Boolean direcionado,Object daddyVertice,ArvoreElement<ArvoreProfundidade.VerticesElement> atual,Integer bloco){
         VerticesElement vElement = new VerticesElement(vertice);
         vElement.setBloco(bloco);
 
@@ -190,7 +190,7 @@ public class Arvore{
 
             this.verticesVisitado.add(vertice.getNome());
             if(atual == null){
-                this.raiz = new ArvoreElement<Arvore.VerticesElement>(vElement);
+                this.raiz = new ArvoreElement<ArvoreProfundidade.VerticesElement>(vElement);
 
                 this.interactionAux = 1;
     
@@ -223,14 +223,14 @@ public class Arvore{
 
                     vElement.setArestasExploradas(arestaAdj,false);
                     if(atual.getKeyEsquerda() == null){
-                        atual.setKeyEsquerda(new ArvoreElement<Arvore.VerticesElement>());
-                        ArvoreElement<Arvore.VerticesElement> atualE = atual.getKeyEsquerda();
+                        atual.setKeyEsquerda(new ArvoreElement<ArvoreProfundidade.VerticesElement>());
+                        ArvoreElement<ArvoreProfundidade.VerticesElement> atualE = atual.getKeyEsquerda();
                         atualE.setAresta(arestaAdj);
                         busca(grafo,vertAdj,direcionado,vertice.getNome(),atualE,bloco);
 
                     }else if (atual.getKeyDireita() == null){
-                        atual.setKeyDireita(new ArvoreElement<Arvore.VerticesElement>());
-                        ArvoreElement<Arvore.VerticesElement> atualR = atual.getKeyDireita();
+                        atual.setKeyDireita(new ArvoreElement<ArvoreProfundidade.VerticesElement>());
+                        ArvoreElement<ArvoreProfundidade.VerticesElement> atualR = atual.getKeyDireita();
                         atualR.setAresta(arestaAdj);
                         busca(grafo,vertAdj,direcionado,vertice.getNome(),atualR,bloco);
                     }

@@ -3,6 +3,7 @@ package ForkLibary.Entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import ForkLibary.Entity.ForkEntity.Aresta;
@@ -66,6 +67,7 @@ public class ForkListAdjacencia extends ForkEntity{
 
 
     public ForkListAdjacencia() {
+        this.quantidadeVertices = 0;
     }
     public ForkListAdjacencia (int quantidadeVertice){
         this.quantidadeVertices = quantidadeVertice;
@@ -204,6 +206,11 @@ public class ForkListAdjacencia extends ForkEntity{
             return v; // Retorna o vertice
         return v;
     }
+
+    public Map<Object,ForkEntity.Vertice> getAllVertices() {
+    	return this.vertice;
+    }
+
     public ForkEntity.Aresta getVerticeAdjacencia(Object vertice1,Object vertice2){
         ForkEntity.Aresta Aresta = null;
         Boolean removeSomeone = false;
@@ -439,8 +446,8 @@ public class ForkListAdjacencia extends ForkEntity{
                         int tamanho =  lista.getValue().size();
                         for (int i = 0; i < tamanho; i++) { 
                             for (Map.Entry<Object,ForkEntity.Aresta> aresta : lista.getValue().get(i).entrySet()) {
-                                if( (aresta.getValue().getVertice_1() == vertice1 || aresta.getValue().getVertice_2() == vertice1) &&
-                                    (aresta.getValue().getVertice_1() == vertice2 || aresta.getValue().getVertice_2() == vertice2)
+                                if( (aresta.getValue().getVertice_1().equals(vertice1) || aresta.getValue().getVertice_2().equals(vertice1)) &&
+                                    (aresta.getValue().getVertice_1().equals(vertice2) || aresta.getValue().getVertice_2().equals(vertice2))
                                 ){
                                     removeSomeone = true;
                                 }
@@ -548,69 +555,27 @@ public class ForkListAdjacencia extends ForkEntity{
         }
     }
 
-    
-}
-
-
-
-// Main class
-class GFG {
- 
-    // Method 1
-    // To make pair of nodes
-    static void addEdge(LinkedList<LinkedList<Integer> > Adj, int u,
-            int v)
+    public void setGrafoByCsv(List<List<String>> arquivoLido)
     {
-        // Creating bi-directional vertex
-        Adj.get(u).add(v);
-        Adj.get(v).add(u);
-    }
- 
-    // Method 2
-    // To print the adjacency list
-    static void
-    printadjacencylist(LinkedList<LinkedList<Integer> > adj)
-    {
-        for (int i = 0; i < adj.size(); ++i) {
- 
-            // Printing the head
-            System.out.print(i + "->");
- 
-            for (int v : adj.get(i)) {
-                // Printing the nodes
-                System.out.print(v + " ");
+		arquivoLido.forEach(linha -> {
+            Object verticeAdjP = null;
+
+            for (int i = 0; i < linha.size(); i++) {
+                if(i == 0){
+                    if(!this.doExistVertice(linha.get(i)))
+				        this.inserirVertice(linha.get(i));
+                    verticeAdjP = linha.get(i);
+                }else{
+                    if(!this.doExistVertice(linha.get(i)))
+                        this.inserirVertice(linha.get(i));
+                    
+                    if(!this.doVerticeExistAdjacencia(linha.get(i),verticeAdjP))
+                        this.inserirAresta(linha.get(i), verticeAdjP);
+                }
             }
- 
-            // Now a new lin eis needed
-            System.out.println();
-        }
+			
+		});
+		
     }
- 
-    // Method 3
-    // Main driver method
-    public static void main(String[] args)
-    {
- 
-        // Creating vertex
-        int V = 5;
- 
-        LinkedList<LinkedList<Integer> > adj
-            = new LinkedList<LinkedList<Integer> >();
-        for (int i = 0; i < V; ++i) {
-            adj.add(new LinkedList<Integer>());
-        }
- 
-        // Inserting nodes
-        // Custom input node elements
-        addEdge(adj, 0, 1);
-        addEdge(adj, 0, 4);
-        addEdge(adj, 1, 2);
-        addEdge(adj, 1, 3);
-        addEdge(adj, 1, 4);
-        addEdge(adj, 2, 3);
-        addEdge(adj, 3, 4);
- 
-        // Printing adjacency list
-        printadjacencylist(adj);
-    }
+
 }
