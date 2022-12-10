@@ -21,31 +21,42 @@ public class AlgoritmoFleury{
     public ArrayList<Object> verticesGrauImpar;
     public ArrayList<Object> verticesGrauPar;
 
-    public ArrayList<Object> caminho;
+    public ArrayList<Object> caminhoNaive;
+    public ArrayList<Object> caminhoTarjan;
 
     public AlgoritmoFleury(ForkListAdjacencia grafoListaAdjacencia){
+        System.out.println("Lista Adjacência: 500");
+        System.out.println("Aplicando Algoritmo de Fleurey ...");
         this.grafoListaAdjacenciaAux = grafoListaAdjacencia;
         this.verticesGrau = grafoListaAdjacencia.getGrausGrafos();
         this.dividirPorTipoNumero();
-        this.caminho = new ArrayList<>();
+        this.caminhoNaive = new ArrayList<>();
+        this.caminhoTarjan = new ArrayList<>();
 
         if(this.condicoesExistEureliano()){
             this.isEureliano = true;
 
             if(this.verticesGrauImpar.size() == 0){
                 for (Object verticesInicio : verticesGrauPar) {
+                    this.startNaive = System.currentTimeMillis();
                     getCaminhoEurelianoNaive(this.grafoListaAdjacenciaAux,verticesInicio);
+                    this.endNaive = (System.currentTimeMillis() - this.startNaive );
+
+                    this.startTarjan = System.currentTimeMillis();
+                    getCaminhoEurelianoTarjan(this.grafoListaAdjacenciaAux, verticesInicio);
+                    this.endTarjan = (System.currentTimeMillis() - this.startTarjan);
+
                     break; // Pegar Só um Caminho.
                 }
             }else{
                 for (Object verticesInicio : verticesGrauImpar) {
                     this.startNaive = System.currentTimeMillis();
                     getCaminhoEurelianoNaive(this.grafoListaAdjacenciaAux,verticesInicio);
-                    this.endNaive = (System.currentTimeMillis() - this.startNaive ) / 1000;
+                    this.endNaive = (System.currentTimeMillis() - this.startNaive );
 
                     this.startTarjan = System.currentTimeMillis();
                     getCaminhoEurelianoTarjan(this.grafoListaAdjacenciaAux, verticesInicio);
-                    this.endTarjan = (System.currentTimeMillis() - this.startNaive) /1000;
+                    this.endTarjan = (System.currentTimeMillis() - this.startTarjan);
 
                     break; // Pegar Só um Caminho.
                 }
@@ -68,14 +79,14 @@ public class AlgoritmoFleury{
                 if(!isPonte || (isPonte && conjuntoAdjacencia.size() == 1)){
                     this.verticesGrau.get(arestaAdj.getVertice_1()).setGrau(true);
                     this.verticesGrau.get(arestaAdj.getVertice_2()).setGrau(true);
-                    this.caminho.add(verticeR);
+                    this.caminhoNaive.add(verticeR);
                     grafoListaAdjacencia.removeAresta(arestaAdj.getVertice_1(),arestaAdj.getVertice_2());
                     getCaminhoEurelianoNaive(grafoListaAdjacencia,arestaAdj.getVertice_2());
                     break;
                 }
             }
         }else{
-            this.caminho.add(verticeR);
+            this.caminhoNaive.add(verticeR);
         }
 
     }
@@ -96,14 +107,14 @@ public class AlgoritmoFleury{
                 if(!isPonte || (isPonte && conjuntoAdjacencia.size() == 1)){
                     this.verticesGrau.get(arestaAdj.getVertice_1()).setGrau(true);
                     this.verticesGrau.get(arestaAdj.getVertice_2()).setGrau(true);
-                    this.caminho.add(verticeR);
+                    this.caminhoTarjan.add(verticeR);
                     grafoListaAdjacencia.removeAresta(arestaAdj.getVertice_1(),arestaAdj.getVertice_2());
                     getCaminhoEurelianoTarjan(grafoListaAdjacencia,arestaAdj.getVertice_2());
                     break;
                 }
             }
         }else{
-            this.caminho.add(verticeR);
+            this.caminhoTarjan.add(verticeR);
         }
 
 
@@ -142,9 +153,21 @@ public class AlgoritmoFleury{
     }
 
     public void getTimeNaive(){
-        System.out.println("Tempo Naive: "+this.endTarjan);
+        System.out.println("Tempo Naive: "+this.endNaive);
     }
     public void getTimeTarjam(){
         System.out.println("Tempo Tarjam: "+this.endTarjan);
+    }
+    public void printCaminhoEurelianoTarjan(){
+        System.out.println("Caminho Eureliano: ");
+        for (Object vertice : this.caminhoTarjan) {
+            System.out.print(vertice +" -> ");
+        }
+    }
+    public void printCaminhoEurelianoNaive(){
+        System.out.println("Caminho Eureliano: ");
+        for (Object vertice : this.caminhoNaive) {
+            System.out.print(vertice +" -> ");
+        }
     }
 }

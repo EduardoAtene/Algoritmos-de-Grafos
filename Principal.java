@@ -261,62 +261,37 @@ class Principal {
          *      Functiton               : printGrafoAdjacencia()
          *      Return StorageDisplay   : Imprimi no terminal o grafo no formato de uma lista encademada 
          */ 
-        // Arvore a = new Arvore();
-        // Vertice v = forkListAdj.getVertice('c');
-        // a.buscaTarjan(forkListAdj,v, false,null,null,1);
-        // a.preOrdemPrint(a.getArvoreProfundidade());
-        // a.printPontes();
-        // ArrayList<ForkEntity.Aresta> conjuntoAdjacencia = forkListAdj.getVerticesAdjacentesByVertices('c', false, false);
+        // forkListAdj.printGrafoAdjacencia();
 
+        /**     IMPRIMINDO GRAFOS
+         * 
+         *      Functiton               : printGrafoAdjacencia()
+         *      Return StorageDisplay   : Imprimi no terminal o grafo no formato de uma lista encademada 
+         */ 
         // forkListAdj.printGrafoAdjacencia();
-        // System.out.println(forkListAdj.removeAresta('a','c'));
-        // forkListAdj.printGrafoAdjacencia();
+
+        // AlgoritmoFleury fleury = new AlgoritmoFleury(forkListAdj);
+        // fleury.getTimeNaive();
+        // fleury.getTimeTarjam();
+        // fleury.printCaminhoEurelianoNaive();
+        // fleury.printCaminhoEurelianoTarjan();
+
 		CsvService csvService = new CsvService();
 		// csvService.gerarCsv(forkListAdj, "grafoLeas");
-		List<List<String>> arquivoLido1 = csvService.lerCsv("grafo2k");
+		List<List<String>> arquivoLido1 = csvService.lerCsv("grafo500");
         ForkListAdjacencia forkListAdjFile = new ForkListAdjacencia();
         forkListAdjFile.setGrafoByCsv(arquivoLido1);
         AlgoritmoFleury fleury = new AlgoritmoFleury(forkListAdjFile);
         fleury.getTimeNaive();
         fleury.getTimeTarjam();
-        
-        // forkListAdjFile.getAllAjacencia();
-        // AlgoritmoNaive algNaive = new AlgoritmoNaive(forkListAdj);
-		// arquivoLido1.forEach(linha -> {
-		// 	if(arquivoLido1.indexOf(linha) == 0){
-		// 		System.out.print(" ");
-		// 	}
-		// 	linha.stream().forEach(palavra -> {
-		// 		System.out.print("   " + palavra);
-		// 	});
-			
-		// 	System.out.println();
-		// });
-        
-        // forkListAdjFile.printGrafoAdjacencia();
-		
-		System.out.println();
-		System.out.println();
-		System.out.println();
+        // fleury.printCaminhoEurelianoNaive();
+        // fleury.printCaminhoEurelianoTarjan();
+
         // forkListAdjFile.printGrafoAdjacencia();
         
 		
-        // a.printPontes();
 
 
     }
-
-    public static void imprime (Double [][] a , int n) {
-        for ( int i = 0; i < n; i ++) {
-            for ( int j = 0; j < n; j++){
-                System.out. print (a[ i ] [ j ] + " " );
-            }
-            System.out. println ( ) ;
-
-        }
-    }
-    
-
-
     
 }

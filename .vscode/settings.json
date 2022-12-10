@@ -2,5 +2,6 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "libs/opencsv-5.7.1.jar"
-    ]
+    ],
+    "java.debug.settings.onBuildFailureProceed": true
 }
